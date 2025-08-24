@@ -16,11 +16,11 @@ MENU_TEXT = (
     "7. Contact Local Clinic or Doctor 📞\n"
     "8. Volunteer as Doctor 🙌\n"
     "9. Blood Pressure Facts 📊\n\n"
-    "For personalized tAI assistant, doctors volunteer, tracking, reminders & MORE🔔, use our Firebase app: https://9000-firebase-studio-1754428033239.cluster-kc2r6y3mtba5mswcmol45orivs.cloudworkstations.dev ❤️\n"
+    "For personalized AI assistant, doctors volunteer, tracking, reminders & MORE🔔, use our Firebase app: https://studio--hypertensio.us-central1.hosted.app ❤️\n"
     "Type 'menu' anytime to see this menu again."
 )
 
-FIREBASE_PROMPT = "\n\n🔔 Want personalized tracking & reminders? Use our Firebase app: https://9000-firebase-studio-1754428033239.cluster-kc2r6y3mtba5mswcmol45orivs.cloudworkstations.dev ❤️"
+FIREBASE_PROMPT = "\n\n🔔 Want personalized tracking & reminders? Use our Firebase app: https://studio--hypertensio.us-central1.hosted.app ❤️"
 
 BP_FACTS = (
     "📊 Blood Pressure Facts:\n"
