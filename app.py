@@ -6,140 +6,22 @@ app = Flask(__name__)
 
 MENU_TEXT = (
     "✨ Welcome to Hypertensio - Your Hypertension Support Bot! ✨\n"
-    "Reply with the number for info:\n"
-    "1. What is Hypertension? 🩺\n"
-    "2. Symptoms of Hypertension 🤒\n"
-    "3. Causes & Risk Factors ⚠️\n"
-    "4. Lifestyle Tips 🍎\n"
-    "5. Medication & Monitoring 💊\n"
-    "6. When to Seek Help 🚨\n"
-    "7. Contact Local Clinic or Doctor 📞\n"
-    "8. Volunteer as Doctor 🙌\n"
-    "9. Blood Pressure Facts 📊\n\n"
-    "For personalized AI assistant, doctors volunteer, tracking, reminders & MORE🔔, use our Firebase app: https://studio--hypertensio.us-central1.hosted.app ❤️\n"
+    "Reply with the number or keyword for info:\n"
+    "1. What is Hypertension? 🩺 (hypertension, high blood pressure)\n"
+    "2. Symptoms of Hypertension 🤒 (symptoms, headache, dizziness)\n"
+    "3. Causes & Risk Factors ⚠️ (causes, risk factors)\n"
+    "4. Lifestyle Tips 🍎 (lifestyle, diet, exercise)\n"
+    "5. Medication & Monitoring 💊 (medication, meds, monitoring)\n"
+    "6. When to Seek Help 🚨 (help, urgent, emergency)\n"
+    "7. Contact Local Clinic or Doctor 📞 (clinic, doctor, contact)\n"
+    "8. Volunteer as Doctor 🙌 (volunteer, doctor, help)\n"
+    "9. Blood Pressure Facts 📊 (blood pressure, facts)\n\n"
+    "For personalized tracking & reminders 🔔, use our Firebase app: "
+    "https://studio--hypertensio.us-central1.hosted.app ❤️\n"
     "Type 'menu' anytime to see this menu again."
 )
 
-FIREBASE_PROMPT = "\n\n🔔 Want personalized tracking & reminders? Use our Firebase app: https://studio--hypertensio.us-central1.hosted.app ❤️"
-
-BP_FACTS = (
-    "📊 Blood Pressure Facts:\n"
-    "- Normal: Around 120/80 mmHg\n"
-    "- Elevated: 120-129/<80 mmHg\n"
-    "- High (Hypertension Stage 1): 130-139/80-89 mmHg\n"
-    "- High (Hypertension Stage 2): 140+/90+ mmHg\n"
-    "- Low blood pressure: Below 90/60 mmHg\n"
-    "If high, lifestyle changes or meds may be needed.\n"
-    "If low and symptomatic, drink fluids, eat small meals, and see a doctor."
-)
-
-SA_MEDICAL_CONTACTS = (
-    "📞 South African Medical Contacts:\n"
-    "- Healthline SA: 0800 22 22 23\n"
-    "- Netcare 911 Emergency: 082 911\n"
-    "- Discovery Health Clinic Finder: 0860 99 88 77\n"
-    "- South African Medical Association: info@samedical.org\n"
-    "- Department of Health Hotline: 0800 61 10 11\n"
-    "\n🌐 Visit their sites for clinic locations:\n"
-    "healthline.co.za | discovery.co.za | samedical.org | health.gov.za\n"
-    "For emergencies, call Netcare 911 immediately 🚑."
-)
-
-@app.route('/whatsapp', methods=['POST'])
-def whatsapp_reply():
-    incoming_msg = request.values.get('Body', '').strip().lower()
-    resp = MessagingResponse()
-    msg = resp.message()
-
-    if incoming_msg in ['hi', 'hello', 'start', 'menu', '?']:
-        msg.body(MENU_TEXT)
-
-    elif incoming_msg == '1':
-        msg.body(
-            "🩺 Hypertension means high blood pressure, forcing your heart to work harder and "
-            "may cause serious problems over time. It's called the 'silent killer' as symptoms "
-            "often don’t show."
-            + FIREBASE_PROMPT
-        )
-
-    elif incoming_msg == '2':
-        msg.body(
-            "🤒 Symptoms often don’t show, but may include headaches, dizziness, and rare nosebleeds. "
-            "Regular monitoring is important."
-            + FIREBASE_PROMPT
-        )
-
-    elif incoming_msg == '3':
-        msg.body(
-            "⚠️ Causes & risk factors: family history, high salt intake, obesity, inactivity, smoking, alcohol, stress."
-            + FIREBASE_PROMPT
-        )
-
-    elif incoming_msg == '4':
-        msg.body(
-            "🍎 Lifestyle tips:\n- Reduce salt intake\n- Exercise regularly\n- Maintain a healthy weight\n"
-            "- Manage stress\n- Avoid tobacco & limit alcohol"
-            + FIREBASE_PROMPT
-        )
-
-    elif incoming_msg == '5':
-        msg.body(
-            "💊 Medication may be needed to control blood pressure. Follow your doctor's instructions and "
-            "take your meds on time."
-            + FIREBASE_PROMPT
-        )
-
-    elif incoming_msg == '6':
-        msg.body(
-            "🚨 Seek urgent help if you experience:\n"
-            "- Severe headache\n- Chest pain\n- Sudden weakness\n- Difficulty breathing\n- Confusion or vision problems"
-            + FIREBASE_PROMPT
-        )
-
-    elif incoming_msg == '7':
-        msg.body(SA_MEDICAL_CONTACTS + FIREBASE_PROMPT)
-
-    elif incoming_msg == '8':
-        msg.body(
-            "🙌 Interested in volunteering? Visit our Firebase app to sign up and help underserved communities."
-        )
-
-    elif incoming_msg == '9':
-        msg.body(BP_FACTS + FIREBASE_PROMPT)
-
-    else:
-        msg.body("❓ Sorry, I didn't understand that. Please select a number from the menu:\n" + MENU_TEXT)
-
-    return str(resp)
-
-
-if __name__ == '__main__':
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host='0.0.0.0', port=port)
-
-from flask import Flask, request
-from twilio.twiml.messaging_response import MessagingResponse
-import os
-
-app = Flask(__name__)
-
-SMS_MENU_TEXT = (
-    "✨ Welcome to Hypertensio - Your Hypertension Support Bot! ✨\n\n"
-    "Reply with the number for info:\n"
-    "1. What is Hypertension? 🩺\n"
-    "2. Symptoms of Hypertension 🤒\n"
-    "3. Causes & Risk Factors ⚠️\n"
-    "4. Lifestyle Tips 🍎\n"
-    "5. Medication & Monitoring 💊\n"
-    "6. When to Seek Help 🚨\n"
-    "7. Contact Local Clinic or Doctor 📞\n"
-    "8. Volunteer as Doctor 🙌\n"
-    "9. Blood Pressure Facts 📊\n\n"
-    "For personalized tracking & reminders 🔔, use our Firebase app: https://studio--hypertensio.us-central1.hosted.app ❤️\n"
-    "Reply 'menu' anytime to see these options again."
-)
-
-FIREBASE_PROMPT = "\n\n🔔 Get personalized tracking & reminders with our Firebase app: https://studio--hypertensio.us-central1.hosted.app ❤️"
+FIREBASE_PROMPT = "\n\n🔔 Get personalized tracking & reminders: https://studio--hypertensio.us-central1.hosted.app ❤️"
 
 SA_MEDICAL_CONTACTS = (
     "📞 South African Medical Contacts:\n"
@@ -163,56 +45,59 @@ BP_FACTS = (
     "If low and symptomatic, drink fluids and see a doctor."
 )
 
+INFO_TEXTS = {
+    '1': "🩺 Hypertension means high blood pressure, forcing your heart to work harder. "
+         "Symptoms often don’t show." + FIREBASE_PROMPT,
+    '2': "🤒 Symptoms often don’t show but may include headaches, dizziness, and rare nosebleeds. "
+         "Regular monitoring is important." + FIREBASE_PROMPT,
+    '3': "⚠️ Causes & risk factors: family history, high salt intake, obesity, inactivity, smoking, alcohol, stress." + FIREBASE_PROMPT,
+    '4': "🍎 Lifestyle tips:\n- Reduce salt intake\n- Exercise regularly\n- Maintain a healthy weight\n"
+         "- Manage stress\n- Avoid tobacco & limit alcohol" + FIREBASE_PROMPT,
+    '5': "💊 Medication may be needed to control blood pressure. Follow your doctor’s instructions and take meds on time." + FIREBASE_PROMPT,
+    '6': "🚨 Seek urgent help if you experience:\n- Severe headache\n- Chest pain\n- Sudden weakness\n"
+         "- Difficulty breathing\n- Confusion or vision problems" + FIREBASE_PROMPT,
+    '7': SA_MEDICAL_CONTACTS + FIREBASE_PROMPT,
+    '8': "🙌 Interested in volunteering? Visit our Firebase app to sign up and help underserved communities.",
+    '9': BP_FACTS + FIREBASE_PROMPT
+}
+
+KEYWORDS = {
+    '1': ['hypertension', 'high blood pressure'],
+    '2': ['symptoms', 'headache', 'dizziness', 'nosebleed'],
+    '3': ['causes', 'risk factors', 'family history', 'obesity', 'salt', 'smoking', 'alcohol', 'stress'],
+    '4': ['lifestyle', 'diet', 'exercise', 'weight', 'stress management'],
+    '5': ['medication', 'meds', 'monitoring', 'medicine', 'doctor advice'],
+    '6': ['help', 'urgent', 'emergency', 'chest pain', 'weakness', 'confusion'],
+    '7': ['clinic', 'doctor', 'contact', 'healthline', 'netcare'],
+    '8': ['volunteer', 'doctor', 'help', 'signup'],
+    '9': ['blood pressure', 'facts', 'bp', 'pressure']
+}
+
+def handle_message(body):
+    incoming_msg = body.strip().lower()
+    if incoming_msg in ['hi', 'hello', 'start', 'menu', '?']:
+        return MENU_TEXT
+    # Check if the user sent a number
+    if incoming_msg in INFO_TEXTS:
+        return INFO_TEXTS[incoming_msg]
+    # Check if the message contains a keyword
+    for key, keywords in KEYWORDS.items():
+        if any(word in incoming_msg for word in keywords):
+            return INFO_TEXTS[key]
+    return "❓ Sorry, I didn't understand that. Reply with a number or keyword, or type 'menu' to see options."
+
+@app.route('/whatsapp', methods=['POST'])
+def whatsapp_reply():
+    resp = MessagingResponse()
+    resp.message(handle_message(request.values.get('Body', '')))
+    return str(resp)
+
 @app.route('/sms', methods=['POST'])
 def sms_reply():
-    incoming_msg = request.values.get('Body', '').strip().lower()
     resp = MessagingResponse()
-    
-    if incoming_msg in ['hi', 'hello', 'start', 'menu', '?']:
-        resp.message(SMS_MENU_TEXT)
-    elif incoming_msg == '1':
-        resp.message(
-            "🩺 Hypertension means high blood pressure, causing your heart to work harder and increasing risk of damage. Symptoms often don’t show." +
-            FIREBASE_PROMPT
-        )
-    elif incoming_msg == '2':
-        resp.message(
-            "🤒 Symptoms often don’t show but can include headaches and dizziness. Regular monitoring is important." +
-            FIREBASE_PROMPT
-        )
-    elif incoming_msg == '3':
-        resp.message(
-            "⚠️ Causes & risk factors: family history, high salt, obesity, inactivity, smoking, alcohol, and stress." +
-            FIREBASE_PROMPT
-        )
-    elif incoming_msg == '4':
-        resp.message(
-            "🍎 Lifestyle tips: reduce salt intake, exercise regularly, maintain healthy weight, manage stress, avoid tobacco & limit alcohol." +
-            FIREBASE_PROMPT
-        )
-    elif incoming_msg == '5':
-        resp.message(
-            "💊 Medication may be needed. Follow your doctor’s advice and take meds on time." +
-            FIREBASE_PROMPT
-        )
-    elif incoming_msg == '6':
-        resp.message(
-            "🚨 Seek urgent help if severe headache, chest pain, sudden weakness, difficulty breathing, or confusion occurs." +
-            FIREBASE_PROMPT
-        )
-    elif incoming_msg == '7':
-        resp.message(SA_MEDICAL_CONTACTS + FIREBASE_PROMPT)
-    elif incoming_msg == '8':
-        resp.message(
-            "🙌 Interested in volunteering? Sign up via our Firebase app: https://your-firebase-app-link"
-        )
-    elif incoming_msg == '9':
-        resp.message(BP_FACTS + FIREBASE_PROMPT)
-    else:
-        resp.message("❓ Sorry, I didn’t understand that. Reply with a number or 'menu' to see options.")
-    
+    resp.message(handle_message(request.values.get('Body', '')))
     return str(resp)
 
 if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 5000))
+    port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port)
