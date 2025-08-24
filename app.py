@@ -116,3 +116,103 @@ def whatsapp_reply():
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port)
+
+from flask import Flask, request
+from twilio.twiml.messaging_response import MessagingResponse
+import os
+
+app = Flask(__name__)
+
+SMS_MENU_TEXT = (
+    "✨ Welcome to Hypertensio - Your Hypertension Support Bot! ✨\n\n"
+    "Reply with the number for info:\n"
+    "1. What is Hypertension? 🩺\n"
+    "2. Symptoms of Hypertension 🤒\n"
+    "3. Causes & Risk Factors ⚠️\n"
+    "4. Lifestyle Tips 🍎\n"
+    "5. Medication & Monitoring 💊\n"
+    "6. When to Seek Help 🚨\n"
+    "7. Contact Local Clinic or Doctor 📞\n"
+    "8. Volunteer as Doctor 🙌\n"
+    "9. Blood Pressure Facts 📊\n\n"
+    "For personalized tracking & reminders 🔔, use our Firebase app: https://studio--hypertensio.us-central1.hosted.app ❤️\n"
+    "Reply 'menu' anytime to see these options again."
+)
+
+FIREBASE_PROMPT = "\n\n🔔 Get personalized tracking & reminders with our Firebase app: https://studio--hypertensio.us-central1.hosted.app ❤️"
+
+SA_MEDICAL_CONTACTS = (
+    "📞 South African Medical Contacts:\n"
+    "- Healthline SA: 0800 22 22 23\n"
+    "- Netcare 911 Emergency: 082 911\n"
+    "- Discovery Health Clinic Finder: 0860 99 88 77\n"
+    "- SAMA Email: info@samedical.org\n"
+    "- Dept of Health Hotline: 0800 61 10 11\n"
+    "\nVisit healthline.co.za | discovery.co.za | samedical.org | health.gov.za\n"
+    "Call Netcare 911 immediately if it’s an emergency 🚑."
+)
+
+BP_FACTS = (
+    "📊 Blood Pressure Facts:\n"
+    "- Normal: Around 120/80 mmHg\n"
+    "- Elevated: 120-129/<80 mmHg\n"
+    "- Stage 1: 130-139/80-89 mmHg\n"
+    "- Stage 2: 140+/90+ mmHg\n"
+    "- Low: Below 90/60 mmHg\n"
+    "If high, lifestyle changes or medication may be necessary.\n"
+    "If low and symptomatic, drink fluids and see a doctor."
+)
+
+@app.route('/sms', methods=['POST'])
+def sms_reply():
+    incoming_msg = request.values.get('Body', '').strip().lower()
+    resp = MessagingResponse()
+    
+    if incoming_msg in ['hi', 'hello', 'start', 'menu', '?']:
+        resp.message(SMS_MENU_TEXT)
+    elif incoming_msg == '1':
+        resp.message(
+            "🩺 Hypertension means high blood pressure, causing your heart to work harder and increasing risk of damage. Symptoms often don’t show." +
+            FIREBASE_PROMPT
+        )
+    elif incoming_msg == '2':
+        resp.message(
+            "🤒 Symptoms often don’t show but can include headaches and dizziness. Regular monitoring is important." +
+            FIREBASE_PROMPT
+        )
+    elif incoming_msg == '3':
+        resp.message(
+            "⚠️ Causes & risk factors: family history, high salt, obesity, inactivity, smoking, alcohol, and stress." +
+            FIREBASE_PROMPT
+        )
+    elif incoming_msg == '4':
+        resp.message(
+            "🍎 Lifestyle tips: reduce salt intake, exercise regularly, maintain healthy weight, manage stress, avoid tobacco & limit alcohol." +
+            FIREBASE_PROMPT
+        )
+    elif incoming_msg == '5':
+        resp.message(
+            "💊 Medication may be needed. Follow your doctor’s advice and take meds on time." +
+            FIREBASE_PROMPT
+        )
+    elif incoming_msg == '6':
+        resp.message(
+            "🚨 Seek urgent help if severe headache, chest pain, sudden weakness, difficulty breathing, or confusion occurs." +
+            FIREBASE_PROMPT
+        )
+    elif incoming_msg == '7':
+        resp.message(SA_MEDICAL_CONTACTS + FIREBASE_PROMPT)
+    elif incoming_msg == '8':
+        resp.message(
+            "🙌 Interested in volunteering? Sign up via our Firebase app: https://your-firebase-app-link"
+        )
+    elif incoming_msg == '9':
+        resp.message(BP_FACTS + FIREBASE_PROMPT)
+    else:
+        resp.message("❓ Sorry, I didn’t understand that. Reply with a number or 'menu' to see options.")
+    
+    return str(resp)
+
+if __name__ == '__main__':
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port)
